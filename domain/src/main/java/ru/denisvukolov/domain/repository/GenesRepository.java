@@ -9,5 +9,5 @@ public interface GenesRepository {
 
     Observable<List<GeneItem>> getGenes();
 
-    Observable<GeneItem> getGeneById(String id);
+    Observable<GeneItem> getGeneById(int id);
 }
