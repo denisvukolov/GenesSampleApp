@@ -23,9 +23,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import ru.denisvukolov.OnListItemClickListener;
 import ru.denisvukolov.di.features.geneslist.GenesListModule;
 import ru.denisvukolov.domain.entity.GeneItem;
-import ru.denisvukolov.genesapp.GenesApplication;
 import ru.denisvukolov.genesapp.R;
 import ru.denisvukolov.presentation.presenter.GenesListPresenter;
 import ru.denisvukolov.presentation.view.GenesListView;
@@ -34,11 +34,12 @@ import ru.denisvukolov.ui.base.BaseMvpAppCompatFragment;
 
 public class GenesListFragment extends BaseMvpAppCompatFragment implements GenesListView {
 
-
     private ProgressBar progressBar;
     private RecyclerView rvGenes;
     private SwipeRefreshLayout refreshLayout;
-    private GenesAdapter adapter;
+
+    @Inject
+    public GenesAdapter adapter;
 
     @InjectPresenter
     public GenesListPresenter presenter;
@@ -55,6 +56,8 @@ public class GenesListFragment extends BaseMvpAppCompatFragment implements Genes
         return new GenesListFragment();
     }
 
+    private OnListItemClickListener onListItemClickListener = (object, position) -> presenter.onGeneItemClicked((Integer) object);
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         initDI();
@@ -70,18 +73,15 @@ public class GenesListFragment extends BaseMvpAppCompatFragment implements Genes
     }
 
     private void initDI() {
-        ((GenesApplication) getActivity().getApplication()).getApplicationComponent().plus(new GenesListModule()).inject(this);
+        getApplicationComponent().plus(new GenesListModule(
+                onListItemClickListener)).inject(this);
     }
 
     private void initUI(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
         rvGenes = view.findViewById(R.id.rv_genes);
         rvGenes.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new GenesAdapter(getContext(), (object, position) -> {
-            presenter.onGeneItemClicked((Integer) object);
-        });
         rvGenes.setAdapter(adapter);
         progressBar = view.findViewById(R.id.progress_bar);
         refreshLayout = view.findViewById(R.id.swipe_to_refresh);
@@ -98,7 +98,6 @@ public class GenesListFragment extends BaseMvpAppCompatFragment implements Genes
     @Override
     public void openGeneDetailsScreen(int geneId) {
         Toast.makeText(getContext(), "Show gene details for id=" + geneId, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override

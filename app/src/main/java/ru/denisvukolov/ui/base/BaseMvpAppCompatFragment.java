@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment;
 
 import com.arellomobile.mvp.MvpDelegate;
 
+import ru.denisvukolov.di.application.ApplicationComponent;
+import ru.denisvukolov.genesapp.GenesApplication;
+
 public class BaseMvpAppCompatFragment extends Fragment {
 
     private boolean mIsStateSaved;
@@ -83,5 +86,9 @@ public class BaseMvpAppCompatFragment extends Fragment {
             mMvpDelegate = new MvpDelegate<>(this);
         }
         return mMvpDelegate;
+    }
+
+    public ApplicationComponent getApplicationComponent() {
+        return ((GenesApplication) getActivity().getApplication()).getApplicationComponent();
     }
 }

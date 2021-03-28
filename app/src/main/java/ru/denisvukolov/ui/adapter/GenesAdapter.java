@@ -23,11 +23,16 @@ public class GenesAdapter extends RecyclerView.Adapter<GenesAdapter.GeneItemView
     private final OnListItemClickListener onItemClickListener;
     private Context context;
 
-    public GenesAdapter(Context context,
-                        OnListItemClickListener onItemClickListener) {
+    public GenesAdapter(
+            OnListItemClickListener onItemClickListener) {
         this.items = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
-        this.context = context;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        context = recyclerView.getContext();
     }
 
     @NonNull
