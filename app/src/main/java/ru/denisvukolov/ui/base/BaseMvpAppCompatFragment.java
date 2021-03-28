@@ -14,11 +14,12 @@ public class BaseMvpAppCompatFragment extends Fragment {
     private boolean mIsStateSaved;
     private MvpDelegate<? extends BaseMvpAppCompatFragment> mMvpDelegate;
 
+    //region ===================== Lifecycle ======================
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getMvpDelegate().onCreate(savedInstanceState);
     }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -77,7 +78,9 @@ public class BaseMvpAppCompatFragment extends Fragment {
             getMvpDelegate().onDestroy();
         }
     }
+    //endregion
 
+    //region ===================== Public ======================
     /**
      * @return The {@link MvpDelegate} being used by this Fragment.
      */
@@ -91,4 +94,7 @@ public class BaseMvpAppCompatFragment extends Fragment {
     public ApplicationComponent getApplicationComponent() {
         return ((GenesApplication) getActivity().getApplication()).getApplicationComponent();
     }
+
+    //endregion
+
 }

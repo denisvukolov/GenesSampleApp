@@ -8,9 +8,13 @@ import ru.denisvukolov.presentation.view.GenesMainContainerView;
 @InjectViewState
 public class GenesMainContainerPresenter extends MvpPresenter<GenesMainContainerView> {
 
+    //region ===================== Lifecycle ======================
+
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         getViewState().showGenesListScreen();
     }
+
+    //end
 }

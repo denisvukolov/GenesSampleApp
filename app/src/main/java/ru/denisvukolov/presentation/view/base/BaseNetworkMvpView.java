@@ -1,4 +1,4 @@
-package ru.denisvukolov.presentation.view;
+package ru.denisvukolov.presentation.view.base;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
@@ -11,4 +11,9 @@ public interface BaseNetworkMvpView  extends MvpView {
 
     void hideLoader();
 
+    void handleNoConnectionError();
+
+    void handleRequestError();
+
+    void handleRetry();
 }

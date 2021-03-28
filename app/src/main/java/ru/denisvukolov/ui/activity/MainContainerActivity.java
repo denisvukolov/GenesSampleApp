@@ -27,6 +27,8 @@ public class MainContainerActivity extends BaseMvpAppCompatActivity implements G
         return presenterProvider.get();
     }
 
+    //region ===================== Lifecycle ======================
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         initDI();
@@ -34,9 +36,17 @@ public class MainContainerActivity extends BaseMvpAppCompatActivity implements G
         setContentView(R.layout.activity_main_container);
     }
 
+    //endregion
+
+    //region ===================== Internal ======================
+
     private void initDI() {
         getAppComponent().plus(new MainContainerModule()).inject(this);
     }
+
+    //endregion
+
+    //region ===================== View ======================
 
     @Override
     public void showGenesListScreen() {
@@ -44,4 +54,6 @@ public class MainContainerActivity extends BaseMvpAppCompatActivity implements G
                 .add(R.id.container, GenesListFragment.newInstance())
                 .commit();
     }
+
+    //endregion
 }

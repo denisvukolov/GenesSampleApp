@@ -3,4 +3,9 @@
     <string name="list_item_gene_age_label_title">Происхождение, возраст</string>
     <string name="list_item_gene_name_label_title">HGNC, название</string>
     <string name="list_item_bold_simple_string_format"><b>%s</b>b> $s</string>
+    <string name="view_request_error_btn_retry">Повторить</string>
+    <string name="request_error_view_no_connection_title">Возникли проблемы\nс интернет-соединением</string>
+    <string name="request_error_view_no_connection_subtitle">Проверьте подключение к интернету\nв настройках и повторите попытку</string>
+    <string name="request_error_view_default_title">Произошла ошибка загрузки</string>
+    <string name="request_error_view_default_subtitle">Пожалуйста, повторите попытку позднее</string>
 </resources>

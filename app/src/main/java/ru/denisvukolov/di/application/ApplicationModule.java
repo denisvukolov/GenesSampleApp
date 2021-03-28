@@ -9,6 +9,8 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.denisvukolov.ConnectivityInterceptor;
+import ru.denisvukolov.NetworkChecker;
 import ru.denisvukolov.OkHttpClientFactory;
 import ru.denisvukolov.data.api.Api;
 import ru.denisvukolov.genesapp.GenesApplication;
@@ -23,12 +25,22 @@ public class ApplicationModule {
     }
 
     @Provides
+    ConnectivityInterceptor provideConnectivityInterceptor(NetworkChecker NetworkChecker) {
+        return new ConnectivityInterceptor(NetworkChecker);
+    }
+
+    @Provides
+    NetworkChecker provideConnectivityManager(Context context) {
+        return new NetworkChecker(context);
+    }
+
+    @Provides
     @Singleton
-    Api provideApi() {
+    Api provideApi(ConnectivityInterceptor connectivityInterceptor) {
         return new Retrofit.Builder()
                 .baseUrl("https://open-genes.com/")
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(OkHttpClientFactory.create())
+                .client(OkHttpClientFactory.create(connectivityInterceptor))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(Api.class);

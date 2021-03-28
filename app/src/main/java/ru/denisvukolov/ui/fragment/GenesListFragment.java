@@ -31,12 +31,14 @@ import ru.denisvukolov.presentation.presenter.GenesListPresenter;
 import ru.denisvukolov.presentation.view.GenesListView;
 import ru.denisvukolov.ui.adapter.GenesAdapter;
 import ru.denisvukolov.ui.base.BaseMvpAppCompatFragment;
+import ru.denisvukolov.ui.views.RequestErrorView;
 
 public class GenesListFragment extends BaseMvpAppCompatFragment implements GenesListView {
 
     private ProgressBar progressBar;
     private RecyclerView rvGenes;
     private SwipeRefreshLayout refreshLayout;
+    private RequestErrorView requestErrorView;
 
     @Inject
     public GenesAdapter adapter;
@@ -52,11 +54,23 @@ public class GenesListFragment extends BaseMvpAppCompatFragment implements Genes
         return presenterProvider.get();
     }
 
+    //region ===================== Public ======================
+
     public static GenesListFragment newInstance() {
         return new GenesListFragment();
     }
 
+    //endregion
+
+
+    //region ===================== Callbacks ======================
+
     private OnListItemClickListener<Integer> onListItemClickListener = (object, position) -> presenter.onGeneItemClicked(object);
+
+    //endregion
+
+
+    //region ===================== Lifecycle ======================
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +86,10 @@ public class GenesListFragment extends BaseMvpAppCompatFragment implements Genes
         return rootView;
     }
 
+    //endregion
+
+    //region ===================== Internal ======================
+
     private void initDI() {
         getApplicationComponent().plus(new GenesListModule(
                 onListItemClickListener)).inject(this);
@@ -86,7 +104,14 @@ public class GenesListFragment extends BaseMvpAppCompatFragment implements Genes
         progressBar = view.findViewById(R.id.progress_bar);
         refreshLayout = view.findViewById(R.id.swipe_to_refresh);
         refreshLayout.setOnRefreshListener(() -> presenter.onRefreshClicked());
+        requestErrorView = RequestErrorView.create(getContext(), view.findViewById(R.id.root), view1 ->
+                presenter.onRetryClicked()
+        );
     }
+
+    //endregion
+
+    //region ===================== View ======================
 
     @Override
     public void showGenesList(List<GeneItem> genes) {
@@ -112,5 +137,23 @@ public class GenesListFragment extends BaseMvpAppCompatFragment implements Genes
         progressBar.setVisibility(View.GONE);
         rvGenes.setVisibility(View.VISIBLE);
         refreshLayout.setVisibility(View.VISIBLE);
+        refreshLayout.setRefreshing(false);
     }
+
+    @Override
+    public void handleRetry() {
+        requestErrorView.hide();
+    }
+
+    @Override
+    public void handleNoConnectionError() {
+        requestErrorView.setupAsNoConnectionView(view -> presenter.onRetryClicked()).show();
+    }
+
+    @Override
+    public void handleRequestError() {
+        requestErrorView.setupAsErrorView(view -> presenter.onRetryClicked()).show();
+    }
+
+    //endregion
 }

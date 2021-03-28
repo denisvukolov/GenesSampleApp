@@ -7,6 +7,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import java.util.List;
 
 import ru.denisvukolov.domain.entity.GeneItem;
+import ru.denisvukolov.presentation.view.base.BaseNetworkMvpView;
 
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface GenesListView extends BaseNetworkMvpView {

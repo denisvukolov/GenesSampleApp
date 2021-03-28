@@ -13,6 +13,7 @@ public class BaseMvpAppCompatActivity extends AppCompatActivity {
 
     private MvpDelegate<? extends BaseMvpAppCompatActivity> mMvpDelegate;
 
+    //region ===================== Lifecycle ======================
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,9 @@ public class BaseMvpAppCompatActivity extends AppCompatActivity {
             getMvpDelegate().onDestroy();
         }
     }
+    //endregion
 
+    //region ===================== Public ======================
     /**
      * @return The {@link MvpDelegate} being used by this Activity.
      */
@@ -66,5 +69,6 @@ public class BaseMvpAppCompatActivity extends AppCompatActivity {
     public ApplicationComponent getAppComponent() {
         return ((GenesApplication) getApplication()).getApplicationComponent();
     }
+    //endregion
 }
 
