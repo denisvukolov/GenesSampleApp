@@ -122,7 +122,10 @@ public class GenesListFragment extends BaseMvpAppCompatFragment implements Genes
 
     @Override
     public void openGeneDetailsScreen(int geneId) {
-        Toast.makeText(getContext(), "Show gene details for id=" + geneId, Toast.LENGTH_SHORT).show();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, GeneDetailsFragment.newInstance(geneId))
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

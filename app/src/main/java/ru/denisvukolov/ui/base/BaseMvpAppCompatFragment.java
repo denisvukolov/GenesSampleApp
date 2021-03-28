@@ -2,6 +2,8 @@ package ru.denisvukolov.ui.base;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.arellomobile.mvp.MvpDelegate;
@@ -20,6 +22,7 @@ public class BaseMvpAppCompatFragment extends Fragment {
         super.onCreate(savedInstanceState);
         getMvpDelegate().onCreate(savedInstanceState);
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -81,6 +84,7 @@ public class BaseMvpAppCompatFragment extends Fragment {
     //endregion
 
     //region ===================== Public ======================
+
     /**
      * @return The {@link MvpDelegate} being used by this Fragment.
      */
@@ -95,6 +99,9 @@ public class BaseMvpAppCompatFragment extends Fragment {
         return ((GenesApplication) getActivity().getApplication()).getApplicationComponent();
     }
 
+    public void setToolbar(Toolbar toolbar) {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+    }
     //endregion
 
 }

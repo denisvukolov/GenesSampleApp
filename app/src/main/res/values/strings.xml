@@ -8,4 +8,5 @@
     <string name="request_error_view_no_connection_subtitle">Проверьте подключение к интернету\nв настройках и повторите попытку</string>
     <string name="request_error_view_default_title">Произошла ошибка загрузки</string>
     <string name="request_error_view_default_subtitle">Пожалуйста, повторите попытку позднее</string>
+    <string name="fragment_gene_details_title">Информация о гене</string>
 </resources>

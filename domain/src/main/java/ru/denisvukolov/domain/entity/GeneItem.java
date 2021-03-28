@@ -46,5 +46,18 @@ public class GeneItem implements Serializable {
     public GeneOrigin getOrigin() {
         return origin;
     }
+
+    @Override
+    public String toString() {
+        return "GeneItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", origin=" + origin +
+                ", functionalClusters=" + functionalClusters +
+                ", ageMya='" + ageMya + '\'' +
+                ", agePhylo='" + agePhylo + '\'' +
+                '}';
+    }
 }
 

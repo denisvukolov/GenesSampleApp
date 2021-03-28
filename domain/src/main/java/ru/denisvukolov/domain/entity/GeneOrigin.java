@@ -26,4 +26,14 @@ public class GeneOrigin implements Serializable {
     public String getPhylum() {
         return phylum;
     }
+
+    @Override
+    public String toString() {
+        return "GeneOrigin{" +
+                "id=" + id +
+                ", phylum='" + phylum + '\'' +
+                ", age='" + age + '\'' +
+                ", order=" + order +
+                '}';
+    }
 }

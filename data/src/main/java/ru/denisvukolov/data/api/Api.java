@@ -14,5 +14,5 @@ public interface Api {
     Observable<List<GeneItem>> getGenes();
 
     @GET("api/gene/{id}")
-    Observable<GeneItem> getGeneById(@Path("id") String id);
+    Observable<GeneItem> getGeneById(@Path("id") int id);
 }

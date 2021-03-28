@@ -21,7 +21,7 @@ public class GenesRepositoryImpl implements GenesRepository {
     }
 
     @Override
-    public Observable<GeneItem> getGeneById(String id) {
+    public Observable<GeneItem> getGeneById(int id) {
         return api.getGeneById(id);
     }
 }
