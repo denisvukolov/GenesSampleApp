@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GenesApp</string>
+    <string name="list_item_gene_age_label_title">Происхождение, возраст</string>
+    <string name="list_item_gene_name_label_title">HGNC, название</string>
 </resources>
