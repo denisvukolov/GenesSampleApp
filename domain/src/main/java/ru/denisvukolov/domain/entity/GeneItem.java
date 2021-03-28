@@ -1,6 +1,7 @@
 package ru.denisvukolov.domain.entity;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 public class GeneItem implements Serializable {
@@ -15,9 +16,19 @@ public class GeneItem implements Serializable {
 
     private List<FunctionalCluster> functionalClusters;
 
-    private String ageMya;
+    private String ncbiId;
 
-    private String agePhylo;
+    private String commentEvolution;
+
+    private String commentFunction;
+
+    private String[] commentCause;
+
+    private String commentAging;
+
+    private String band;
+
+    private String orientation;
 
     public int getId() {
         return id;
@@ -27,16 +38,8 @@ public class GeneItem implements Serializable {
         return name;
     }
 
-    public String getAgeMya() {
-        return ageMya;
-    }
-
     public String getSymbol() {
         return symbol;
-    }
-
-    public String getAgePhylo() {
-        return agePhylo;
     }
 
     public List<FunctionalCluster> getFunctionalClusters() {
@@ -47,6 +50,34 @@ public class GeneItem implements Serializable {
         return origin;
     }
 
+    public String getNcbiId() {
+        return ncbiId;
+    }
+
+    public String getCommentAging() {
+        return commentAging;
+    }
+
+    public String getCommentEvolution() {
+        return commentEvolution;
+    }
+
+    public String getCommentFunction() {
+        return commentFunction;
+    }
+
+    public String[] getCommentCause() {
+        return commentCause;
+    }
+
+    public String getBand() {
+        return band;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
     @Override
     public String toString() {
         return "GeneItem{" +
@@ -55,8 +86,13 @@ public class GeneItem implements Serializable {
                 ", symbol='" + symbol + '\'' +
                 ", origin=" + origin +
                 ", functionalClusters=" + functionalClusters +
-                ", ageMya='" + ageMya + '\'' +
-                ", agePhylo='" + agePhylo + '\'' +
+                ", ncbiId='" + ncbiId + '\'' +
+                ", commentEvolution='" + commentEvolution + '\'' +
+                ", commentFunction='" + commentFunction + '\'' +
+                ", commentCause=" + Arrays.toString(commentCause) +
+                ", commentAging='" + commentAging + '\'' +
+                ", band='" + band + '\'' +
+                ", orientation='" + orientation + '\'' +
                 '}';
     }
 }
