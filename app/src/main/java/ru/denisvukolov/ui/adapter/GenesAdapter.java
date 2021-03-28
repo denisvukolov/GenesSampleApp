@@ -20,11 +20,10 @@ import ru.denisvukolov.genesapp.R;
 public class GenesAdapter extends RecyclerView.Adapter<GenesAdapter.GeneItemViewHolder> {
 
     private List<GeneItem> items;
-    private final OnListItemClickListener onItemClickListener;
+    private final OnListItemClickListener<Integer> onItemClickListener;
     private Context context;
 
-    public GenesAdapter(
-            OnListItemClickListener onItemClickListener) {
+    public GenesAdapter(OnListItemClickListener<Integer> onItemClickListener) {
         this.items = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
     }

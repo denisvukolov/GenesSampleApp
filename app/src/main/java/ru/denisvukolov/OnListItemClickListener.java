@@ -1,5 +1,5 @@
 package ru.denisvukolov;
 
-public interface OnListItemClickListener {
-    void onItemClicked(Object object, int position);
+public interface OnListItemClickListener<T> {
+    void onItemClicked(T object, int position);
 }

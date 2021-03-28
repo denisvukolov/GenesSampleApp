@@ -56,7 +56,7 @@ public class GenesListFragment extends BaseMvpAppCompatFragment implements Genes
         return new GenesListFragment();
     }
 
-    private OnListItemClickListener onListItemClickListener = (object, position) -> presenter.onGeneItemClicked((Integer) object);
+    private OnListItemClickListener<Integer> onListItemClickListener = (object, position) -> presenter.onGeneItemClicked(object);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
