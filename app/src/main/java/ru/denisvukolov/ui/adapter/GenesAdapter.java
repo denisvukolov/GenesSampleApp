@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.denisvukolov.OnListItemClickListener;
+import ru.denisvukolov.Utils;
 import ru.denisvukolov.domain.entity.GeneItem;
 import ru.denisvukolov.genesapp.R;
 
@@ -72,8 +72,8 @@ public class GenesAdapter extends RecyclerView.Adapter<GenesAdapter.GeneItemView
         }
 
         public void bind(GeneItem item) {
-            tvName.setText(HtmlCompat.fromHtml("<b>" + item.getSymbol() + "</b> " + item.getName(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-            tvAge.setText(HtmlCompat.fromHtml("<b>" + item.getOrigin().getPhylum() + "</b> " + item.getOrigin().getAge() + " (млн. лет)", HtmlCompat.FROM_HTML_MODE_LEGACY));
+            tvName.setText(Utils.fromHtml("<b>" + item.getSymbol() + "</b> " + item.getName()));
+            tvAge.setText(Utils.fromHtml("<b>" + item.getOrigin().getPhylum() + "</b> " + item.getOrigin().getAge() + " (млн. лет)"));
         }
     }
 }

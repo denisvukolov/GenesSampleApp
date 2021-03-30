@@ -1,25 +1,29 @@
 package ru.denisvukolov.ui.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import ru.denisvukolov.Utils;
 import ru.denisvukolov.di.features.genedetails.GeneDetailsModule;
 import ru.denisvukolov.domain.entity.GeneItem;
 import ru.denisvukolov.genesapp.R;
+import ru.denisvukolov.genesapp.databinding.FragmentGeneDetailsBinding;
 import ru.denisvukolov.presentation.presenter.GeneDetailsPresenter;
 import ru.denisvukolov.presentation.view.GeneDetailsView;
 import ru.denisvukolov.ui.base.BaseMvpAppCompatFragment;
@@ -28,6 +32,7 @@ import ru.denisvukolov.ui.views.RequestErrorView;
 public class GeneDetailsFragment extends BaseMvpAppCompatFragment implements GeneDetailsView {
 
     private static final String KEY_ID = "KEY_ID";
+    private static final String GENE_ORIENTATION_MINUS = "-1";
 
     @InjectPresenter
     public GeneDetailsPresenter presenter;
@@ -40,11 +45,8 @@ public class GeneDetailsFragment extends BaseMvpAppCompatFragment implements Gen
         return presenterProvider.get();
     }
 
+    private FragmentGeneDetailsBinding binding;
     private RequestErrorView requestErrorView;
-
-    private ProgressBar progressBar;
-
-    private TextView tvDetails;
 
     //region ===================== Instance ======================
 
@@ -75,11 +77,10 @@ public class GeneDetailsFragment extends BaseMvpAppCompatFragment implements Gen
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_gene_details, container, false);
-        initUI(rootView);
-        return rootView;
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_gene_details, container, false);
+        initUI(binding.getRoot());
+        return binding.getRoot();
     }
-
 
     //endregion
 
@@ -94,10 +95,9 @@ public class GeneDetailsFragment extends BaseMvpAppCompatFragment implements Gen
         toolbar.setTitle(R.string.fragment_gene_details_title);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
         setToolbar(toolbar);
-        tvDetails = view.findViewById(R.id.tv_details);
-        progressBar = view.findViewById(R.id.progress_bar);
-        requestErrorView = RequestErrorView.create(getContext(), view.findViewById(R.id.root), view1 ->
-                presenter.onRetryClicked()
+        toolbar.setNavigationOnClickListener((view1) -> getActivity().onBackPressed());
+
+        requestErrorView = RequestErrorView.create(getContext(), view.findViewById(R.id.root), onRetryClickListener
         );
     }
 
@@ -107,18 +107,41 @@ public class GeneDetailsFragment extends BaseMvpAppCompatFragment implements Gen
 
     @Override
     public void showDetails(GeneItem geneItem) {
-        tvDetails.setText(geneItem.toString());
+        binding.tvGeneSymbol.setText(geneItem.getSymbol());
+        binding.tvGeneName.setText(geneItem.getName());
+        if (!TextUtils.isEmpty(geneItem.getCommentFunction())) {
+            binding.tvFunctionsComment.setText(geneItem.getCommentFunction());
+            binding.groupFunctions.setVisibility(View.VISIBLE);
+        } else {
+            binding.groupFunctions.setVisibility(View.GONE);
+        }
+        if (!TextUtils.isEmpty(geneItem.getCommentEvolution())) {
+            binding.tvEvolutionComment.setText(geneItem.getCommentEvolution());
+            binding.groupEvolution.setVisibility(View.VISIBLE);
+        } else {
+            binding.groupEvolution.setVisibility(View.GONE);
+        }
+
+        String bornInfo = getString(R.string.fragment_gene_details_born_info_text_format, geneItem.getOrigin().getPhylum(), geneItem.getOrigin().getAge());
+        binding.tvBorn.setText(Utils.fromHtml(bornInfo));
+        String orientation;
+        if (GENE_ORIENTATION_MINUS.equals(geneItem.getOrientation())) {
+            orientation = getString(R.string.fragment_gene_details_gene_orientation_minus);
+        } else {
+            orientation = getString(R.string.fragment_gene_details_gene_orientation_plus);
+        }
+        String placeInfo = getString(R.string.fragment_gene_details_place_text_format, geneItem.getBand(), orientation);
+        binding.tvPlace.setText(Utils.fromHtml(placeInfo));
     }
 
     @Override
     public void showLoader() {
-        progressBar.setVisibility(View.VISIBLE);
-
+        binding.flProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoader() {
-        progressBar.setVisibility(View.GONE);
+        binding.flProgress.setVisibility(View.GONE);
     }
 
     @Override
@@ -137,5 +160,4 @@ public class GeneDetailsFragment extends BaseMvpAppCompatFragment implements Gen
     }
 
     //endregion
-
 }
