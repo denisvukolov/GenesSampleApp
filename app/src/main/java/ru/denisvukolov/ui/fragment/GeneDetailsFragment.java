@@ -14,13 +14,14 @@ import androidx.databinding.DataBindingUtil;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 
 import ru.denisvukolov.Utils;
 import ru.denisvukolov.di.features.genedetails.GeneDetailsModule;
+import ru.denisvukolov.domain.entity.FunctionalCluster;
 import ru.denisvukolov.domain.entity.GeneItem;
 import ru.denisvukolov.genesapp.R;
 import ru.denisvukolov.genesapp.databinding.FragmentGeneDetailsBinding;
@@ -62,7 +63,7 @@ public class GeneDetailsFragment extends BaseMvpAppCompatFragment implements Gen
 
     //region ===================== Callbacks ======================
 
-    private View.OnClickListener onRetryClickListener = view -> presenter.onRetryClicked();
+    private final View.OnClickListener onRetryClickListener = view -> presenter.onRetryClicked();
 
     //endregion
 
@@ -96,9 +97,64 @@ public class GeneDetailsFragment extends BaseMvpAppCompatFragment implements Gen
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
         setToolbar(toolbar);
         toolbar.setNavigationOnClickListener((view1) -> getActivity().onBackPressed());
+        requestErrorView = RequestErrorView.create(getContext(), view.findViewById(R.id.root), onRetryClickListener);
+    }
 
-        requestErrorView = RequestErrorView.create(getContext(), view.findViewById(R.id.root), onRetryClickListener
-        );
+    private void showCommentFunction(String commentFunction) {
+        if (!TextUtils.isEmpty(commentFunction)) {
+            binding.tvFunctionsComment.setText(commentFunction);
+            binding.groupFunctions.setVisibility(View.VISIBLE);
+        } else {
+            binding.groupFunctions.setVisibility(View.GONE);
+        }
+    }
+
+    private void showCommentEvolution(String commentEvolution) {
+        if (!TextUtils.isEmpty(commentEvolution)) {
+            binding.tvEvolutionComment.setText(commentEvolution);
+            binding.groupEvolution.setVisibility(View.VISIBLE);
+        } else {
+            binding.groupEvolution.setVisibility(View.GONE);
+        }
+    }
+
+    private void showBornInfo(String phylum, String age) {
+        String bornInfo = getString(R.string.fragment_gene_details_born_info_text_format, phylum, age);
+        binding.tvBorn.setText(Utils.fromHtml(bornInfo));
+
+    }
+
+    private void showPlaceInfo(String band, String orientation) {
+        String orientationText;
+        if (GENE_ORIENTATION_MINUS.equals(orientation)) {
+            orientationText = getString(R.string.fragment_gene_details_gene_orientation_minus);
+        } else {
+            orientationText = getString(R.string.fragment_gene_details_gene_orientation_plus);
+        }
+        String placeInfo = getString(R.string.fragment_gene_details_place_text_format, band, orientationText);
+        binding.tvPlace.setText(Utils.fromHtml(placeInfo));
+    }
+
+    private void showFunctionalClusters(List<FunctionalCluster> clusters) {
+        StringBuilder clustersText = new StringBuilder();
+        for (FunctionalCluster cluster : clusters) {
+            clustersText.append(cluster.getName()).append(", ");
+        }
+        clustersText.delete(clustersText.length() - 2, clustersText.length());
+        binding.tvFunctions.setText(clustersText);
+    }
+
+    private void showCommentCause(@Nullable String[] commentCauses) {
+        if (commentCauses != null && commentCauses.length > 0) {
+            StringBuilder commentCauseText = new StringBuilder();
+            for (String commentCause : commentCauses) {
+                commentCauseText.append("- ").append(commentCause).append(";\n");
+            }
+            binding.tvCauseComment.setText(commentCauseText);
+            binding.groupFunctions.setVisibility(View.VISIBLE);
+        } else {
+            binding.groupFunctions.setVisibility(View.GONE);
+        }
     }
 
     //endregion
@@ -109,29 +165,12 @@ public class GeneDetailsFragment extends BaseMvpAppCompatFragment implements Gen
     public void showDetails(GeneItem geneItem) {
         binding.tvGeneSymbol.setText(geneItem.getSymbol());
         binding.tvGeneName.setText(geneItem.getName());
-        if (!TextUtils.isEmpty(geneItem.getCommentFunction())) {
-            binding.tvFunctionsComment.setText(geneItem.getCommentFunction());
-            binding.groupFunctions.setVisibility(View.VISIBLE);
-        } else {
-            binding.groupFunctions.setVisibility(View.GONE);
-        }
-        if (!TextUtils.isEmpty(geneItem.getCommentEvolution())) {
-            binding.tvEvolutionComment.setText(geneItem.getCommentEvolution());
-            binding.groupEvolution.setVisibility(View.VISIBLE);
-        } else {
-            binding.groupEvolution.setVisibility(View.GONE);
-        }
-
-        String bornInfo = getString(R.string.fragment_gene_details_born_info_text_format, geneItem.getOrigin().getPhylum(), geneItem.getOrigin().getAge());
-        binding.tvBorn.setText(Utils.fromHtml(bornInfo));
-        String orientation;
-        if (GENE_ORIENTATION_MINUS.equals(geneItem.getOrientation())) {
-            orientation = getString(R.string.fragment_gene_details_gene_orientation_minus);
-        } else {
-            orientation = getString(R.string.fragment_gene_details_gene_orientation_plus);
-        }
-        String placeInfo = getString(R.string.fragment_gene_details_place_text_format, geneItem.getBand(), orientation);
-        binding.tvPlace.setText(Utils.fromHtml(placeInfo));
+        showCommentFunction(geneItem.getCommentFunction());
+        showCommentEvolution(geneItem.getCommentEvolution());
+        showBornInfo(geneItem.getOrigin().getPhylum(), geneItem.getOrigin().getAge());
+        showPlaceInfo(geneItem.getBand(), geneItem.getOrientation());
+        showFunctionalClusters(geneItem.getFunctionalClusters());
+        showCommentCause(geneItem.getCommentCause());
     }
 
     @Override
