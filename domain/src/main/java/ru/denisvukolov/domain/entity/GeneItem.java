@@ -1,33 +1,47 @@
 package ru.denisvukolov.domain.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 public class GeneItem implements Serializable {
 
+    @SerializedName("id")
     private int id;
 
+    @SerializedName("name")
     private String name;
 
+    @SerializedName("symbol")
     private String symbol;
 
+    @SerializedName("origin")
     private GeneOrigin origin;
 
+    @SerializedName("functionalClusters")
     private List<FunctionalCluster> functionalClusters;
 
+    @SerializedName("ncbiId")
     private String ncbiId;
 
+    @SerializedName("commentEvolution")
     private String commentEvolution;
 
+    @SerializedName("commentFunction")
     private String commentFunction;
 
+    @SerializedName("commentCause")
     private String[] commentCause;
 
+    @SerializedName("commentAging")
     private String commentAging;
 
+    @SerializedName("band")
     private String band;
 
+    @SerializedName("orientation")
     private String orientation;
 
     public int getId() {
