@@ -13,6 +13,7 @@ import ru.denisvukolov.ConnectivityInterceptor;
 import ru.denisvukolov.NetworkChecker;
 import ru.denisvukolov.OkHttpClientFactory;
 import ru.denisvukolov.data.api.Api;
+import ru.denisvukolov.genesapp.BuildConfig;
 import ru.denisvukolov.genesapp.GenesApplication;
 
 @Module
@@ -38,7 +39,7 @@ public class ApplicationModule {
     @Singleton
     Api provideApi(ConnectivityInterceptor connectivityInterceptor) {
         return new Retrofit.Builder()
-                .baseUrl("https://open-genes.com/")
+                .baseUrl(BuildConfig.API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(OkHttpClientFactory.create(connectivityInterceptor))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
