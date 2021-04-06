@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".GenesApplication"
+        android:name=".application.GenesApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GenesApp">
 
-        <activity android:name="ru.denisvukolov.ui.activity.MainContainerActivity">
+        <activity android:name=".ui.activity.MainContainerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
